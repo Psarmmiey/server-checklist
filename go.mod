@@ -1,4 +1,4 @@
-module github.com/psarmmiey/server-checklist
+module github.com/Psarmmiey/server-checklist
 
 go 1.19
 

@@ -9,20 +9,25 @@ jobs:
     steps:
     - name: Checkout code
       uses: actions/checkout@v3
-
-    - name: Install dependencies
-      run: |
-        go mod download
- 
+    - name: Set up Go 1.19.x
+      uses: actions/setup-go@v3
+      with:
+        go-version: 1.19.x
+        
     - name: Generate firewall checklist
-      env:
-        ANSIBLE-DIR: hosts.yml
       run: |
-        go run generate_firewall_checklist.go --p $ANSIBLE-DIR
+        go build -o firewall-checklist github.com/interstellartech/golang-doc-checker --p=$ANSIBLE-DIR
 
+    - name: Run firewall checklist
+      env:
+        ANSIBLE_DIR: ${{ github.workspace }}/ansible
+        OUTPUT_DIR: ${{ github.workspace }}/ansible/firewall-checklist
+      run: |
+        ./firewall-checklist --p=$ANSIBLE_DIR
+  
     - name: Commit generated firewall checklist
       run: |
         git config --local user.email "action@github.com"
         git config --local user.name "GitHub Action"
-        git add $OUTPUT_FILE
+        git add $OUTPUT_DIR
         git commit -m "Add generated firewall checklist" || echo "No changes to commit"

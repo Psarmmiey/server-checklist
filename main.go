@@ -35,8 +35,9 @@ type FirewallChecklist struct {
 }
 
 type ValidatorNode struct {
-	Ports       []string `yaml:"ports"`
-	IPWhitelist []string `yaml:"ip-whitelist"`
+	Ports            []string `yaml:"ports"`
+	IPWhitelist      []string `yaml:"ip-whitelist"`
+	IPWhitelistArray string   `yaml:"ip-whitelist-array"`
 }
 
 func checkHostFile(hostsPath, outputPath string) {
@@ -76,11 +77,20 @@ func checkHostFile(hostsPath, outputPath string) {
 				IPWhitelist: []string{},
 			}
 
+			validatorNode.IPWhitelistArray = "["
 			for otherHostName, otherHostDetails := range hosts.All.Hosts {
 				if otherHostName != hostName && otherHostDetails.AnsibleHost != "" {
 					validatorNode.IPWhitelist = append(validatorNode.IPWhitelist, fmt.Sprintf("%v # %v", strings.ReplaceAll(otherHostDetails.AnsibleHost, "'", ""), otherHostName))
+					// append the ansible hostnames to the ip whitelist array [ip1,1p2,1p3...] add [ to the start and ] to the end don't add the first comma before the first ip and don't add a comma after the last ip
+					if validatorNode.IPWhitelistArray == "[" {
+						validatorNode.IPWhitelistArray = fmt.Sprintf("%v%v", validatorNode.IPWhitelistArray, strings.ReplaceAll(otherHostDetails.AnsibleHost, "'", ""))
+					} else {
+						validatorNode.IPWhitelistArray = fmt.Sprintf("%v,%v", validatorNode.IPWhitelistArray, strings.ReplaceAll(otherHostDetails.AnsibleHost, "'", ""))
+					}
+
 				}
 			}
+			validatorNode.IPWhitelistArray = fmt.Sprintf("%v]", validatorNode.IPWhitelistArray)
 
 			firewallChecklist.Firewall.ValidatorNodes[hostDetails.AnsibleHost] = validatorNode
 			// append the ansible hostnames to the validator nodes
@@ -156,7 +166,8 @@ func main() {
 				continue
 			}
 			hostsFilePath := filepath.Join(hostsPath, hostsFile.Name())
-			outputFilePath := filepath.Join(outputPath, hostsFile.Name())
+			// name file hostfile.yml to hostfile-firewall-checklist.yml
+			outputFilePath := filepath.Join(outputPath, strings.ReplaceAll(hostsFile.Name(), ".yml", "-firewall-checklist.yml"))
 
 			checkHostFile(hostsFilePath, outputFilePath)
 		}
