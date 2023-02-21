@@ -1,0 +1,62 @@
+firewall-checklist:
+  validator-nodes:
+    13.69.55.110:
+      ports:
+      - 2210 # archives
+      - 11625 # blockchain gossip protocol
+      ip-whitelist:
+      - 95.179.137.201 # blinc-blockchain-testnet-5
+      - 40.114.150.166 # blinc-sterling-blockchain-testnet-1
+      - 13.93.89.122 # blinc-blockchain-testnet-2
+      - 20.90.2.227 # blinc-blockchain-testnet-3
+      - 51.124.248.172 # blinc-blockchain-testnet-4
+    13.93.89.122:
+      ports:
+      - 2210 # archives
+      - 11625 # blockchain gossip protocol
+      ip-whitelist:
+      - 13.69.55.110 # blinc-blockchain-testnet-1
+      - 20.90.2.227 # blinc-blockchain-testnet-3
+      - 51.124.248.172 # blinc-blockchain-testnet-4
+      - 95.179.137.201 # blinc-blockchain-testnet-5
+      - 40.114.150.166 # blinc-sterling-blockchain-testnet-1
+    20.90.2.227:
+      ports:
+      - 2210 # archives
+      - 11625 # blockchain gossip protocol
+      ip-whitelist:
+      - 13.93.89.122 # blinc-blockchain-testnet-2
+      - 51.124.248.172 # blinc-blockchain-testnet-4
+      - 95.179.137.201 # blinc-blockchain-testnet-5
+      - 40.114.150.166 # blinc-sterling-blockchain-testnet-1
+      - 13.69.55.110 # blinc-blockchain-testnet-1
+    40.114.150.166:
+      ports:
+      - 2210 # archives
+      - 11625 # blockchain gossip protocol
+      ip-whitelist:
+      - 13.69.55.110 # blinc-blockchain-testnet-1
+      - 13.93.89.122 # blinc-blockchain-testnet-2
+      - 20.90.2.227 # blinc-blockchain-testnet-3
+      - 51.124.248.172 # blinc-blockchain-testnet-4
+      - 95.179.137.201 # blinc-blockchain-testnet-5
+    51.124.248.172:
+      ports:
+      - 2210 # archives
+      - 11625 # blockchain gossip protocol
+      ip-whitelist:
+      - 13.69.55.110 # blinc-blockchain-testnet-1
+      - 13.93.89.122 # blinc-blockchain-testnet-2
+      - 20.90.2.227 # blinc-blockchain-testnet-3
+      - 95.179.137.201 # blinc-blockchain-testnet-5
+      - 40.114.150.166 # blinc-sterling-blockchain-testnet-1
+    95.179.137.201:
+      ports:
+      - 2210 # archives
+      - 11625 # blockchain gossip protocol
+      ip-whitelist:
+      - 51.124.248.172 # blinc-blockchain-testnet-4
+      - 40.114.150.166 # blinc-sterling-blockchain-testnet-1
+      - 13.69.55.110 # blinc-blockchain-testnet-1
+      - 13.93.89.122 # blinc-blockchain-testnet-2
+      - 20.90.2.227 # blinc-blockchain-testnet-3

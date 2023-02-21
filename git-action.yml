@@ -1,0 +1,28 @@
+name: Generate Firewall Checklist
+
+on: [push]
+
+jobs:
+  generate-firewall-checklist:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Install dependencies
+      run: |
+        go mod download
+ 
+    - name: Generate firewall checklist
+      env:
+        ANSIBLE-DIR: hosts.yml
+      run: |
+        go run generate_firewall_checklist.go --p $ANSIBLE-DIR
+
+    - name: Commit generated firewall checklist
+      run: |
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+        git add $OUTPUT_FILE
+        git commit -m "Add generated firewall checklist" || echo "No changes to commit"
